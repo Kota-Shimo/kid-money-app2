@@ -2,8 +2,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import Link from 'next/link';
-import { LinearProgress, Typography, Box } from '@mui/material';
+import { LinearProgress, Typography, Card, CardContent, Box } from '@mui/material';
 
 export default function HomePage() {
   const [balance, setBalance] = useState(0);
@@ -25,23 +24,26 @@ export default function HomePage() {
   const progress = goalAmount > 0 ? (balance / goalAmount) * 100 : 0;
 
   return (
-    <Box sx={{ m: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        子どもマネー
-      </Typography>
+    <Card>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          ホーム
+        </Typography>
 
-      <Typography>現在の残高: {balance}円</Typography>
-      <Typography>目標金額: {goalAmount}円</Typography>
+        <Typography variant="body1">
+          現在の残高: <strong>{balance} 円</strong>
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          目標金額: <strong>{goalAmount} 円</strong>
+        </Typography>
 
-      <Box sx={{ my: 2, width: '80%', maxWidth: 400 }}>
-        <LinearProgress variant="determinate" value={progress} />
-      </Box>
-
-      <nav>
-        <Link href="/tasks" style={{ marginRight: 20 }}>家事ミッション</Link>
-        <Link href="/goal" style={{ marginRight: 20 }}>貯金目標</Link>
-        <Link href="/study">学習ページ</Link>
-      </nav>
-    </Box>
+        <Box sx={{ mb: 1 }}>
+          <LinearProgress variant="determinate" value={progress} />
+        </Box>
+        <Typography variant="body2" color="textSecondary">
+          達成率: {Math.floor(progress)}%
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }
